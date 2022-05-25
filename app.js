@@ -8,7 +8,7 @@ app.use(express.json());
 
 /////////////// CREATE DATA //////////////////////////////////////
 
-app.post("/api/inventario", (req, res) => {
+app.post("/api/inventario", (req, res) => {  
     const data = {id,inventario,equipo,marca,modelo,categoria} = req.body;
     const sql = "INSERT INTO inventario_labing SET ?";
     connection.query(sql, data, (error, results)=>{
@@ -42,8 +42,39 @@ app.get("/api/inventario/:id", (req, res) => {
   })
 })
 
-
 /////////////// UPDATE DATA //////////////////////////////////////
+
+app.put("/api/inventario/:id", (req, res) => {
+  const id = req.params.id;
+  const inventario = req.body.inventario;
+  const equipo = req.body.equipo;
+  const marca = req.body.marca;
+  const modelo = req.body.modelo;
+  const categoria = req.body.categoria;
+  const sql = "UPDATE inventario_labing SET inventario = ? , equipo = ? , marca = ?, modelo = ?, categoria = ? WHERE id = ?";
+  connection.query(sql ,[inventario,equipo,marca,modelo,categoria,id], (error,result) =>{
+    if(error){
+      throw error;
+    } else {
+      res.send(result);
+    }
+  })
+})
+
+///////////// DELETE DATA ///////////////////////////////////////
+app.delete("/api/inventario/:id", (req, res) => {
+  const id = req.params.id;
+  const sql = "DELETE FROM inventario_labing WHERE id = ?";
+ 
+  connection.query(sql,id, (error, result) =>{
+    if (error) {
+      throw error;
+    } else {
+      res.send(result);
+    }
+  });
+});
+
 
 
 
